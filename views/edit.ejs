@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog app</title>
+  </head>
+  <body>
+    <script>
+      function handleupdate(id, title, snippt, body) {
+        fetch(`/edit/${id}`, {
+          method: "PUT" /* or PATCH */,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: title,
+            snippt: snippt,
+            body: body,
+          }),
+        })
+          .then((res) => res.json())
+          .then((window.location.href = "/all"))
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    </script>
+    <!-- navbar -->
+    <!-- <%- include('./component/navbar') %> -->
+    <!-- end of navbar -->
+    <div class="container">
+      <h1>edit page</h1>
+      <h3>id :<%= obj._id %></h3>
+      <h3>title :<%= obj.title %></h3>
+      <h3>snippt :<%= obj.snippt %></h3>
+      <h3>body :<%= obj.body %></h3>
+      <form>
+        <label for="title">Article title:</label> <br />
+        <input
+          type="text"
+          id="title"
+          name="txttitle"
+          required
+          value="<%= obj.title %>"
+        /><br />
+
+        <label for="summary">Article summary:</label> <br />
+        <input
+          type="text"
+          id="summary"
+          name="txtsnippt"
+          required
+          value="<%= obj.snippt %>"
+        />
+        <br />
+
+        <label for="body">Article body:</label><br />
+        <textarea id="body" name="txtbody" required><%= obj.body %></textarea>
+        <br />
+
+        <button
+          type="button"
+          onclick="handleupdate('<%= obj._id %>', txttitle.value, txtsnippt.value, txtbody.value)"
+          class="btn-info"
+        >
+          update
+        </button>
+      </form>
+    </div>
+  </body>
+</html>
